@@ -13,7 +13,7 @@ public abstract class BaseRepository<TEntity>(DataContext context) : IBaseReposi
 
 
 
-    //Create
+    //Create 
 
     public virtual async Task<TEntity> CreateAsync(TEntity entity)
     {
