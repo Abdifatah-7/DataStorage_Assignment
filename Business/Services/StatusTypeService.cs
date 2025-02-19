@@ -1,14 +1,15 @@
 ﻿using Business.Factories;
+using Business.Interfaces;
 using Business.Models;
 using Data.Repositories;
 
 namespace Business.Services;
 
-public class StatusTypeService(StatusTypeRepository statusTypeRepository)
+public class StatusTypeService(StatusTypeRepository statusTypeRepository) : IStatusTypeService
 {
     private readonly StatusTypeRepository _statusTypeRepository = statusTypeRepository;
 
-  
+
     public async Task<bool> CreateStatusTypeAsync(StatusTypeRegistration form)
     {
         var existingStatus = await _statusTypeRepository.GetAsync(s => s.StatusName == form.StatusName);
@@ -20,14 +21,14 @@ public class StatusTypeService(StatusTypeRepository statusTypeRepository)
         return true;
     }
 
-   
+
     public async Task<IEnumerable<StatusType?>> GetStatusTypesAsync()
     {
         var statusEntities = await _statusTypeRepository.GetAllAsync();
         return statusEntities.Select(StatusTypeFactory.Create)!;
     }
 
-   
+
     public async Task<StatusType?> GetStatusTypeByIdAsync(int id)
     {
         var statusEntity = await _statusTypeRepository.GetAsync(s => s.Id == id);

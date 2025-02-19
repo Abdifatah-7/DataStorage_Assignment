@@ -1,10 +1,11 @@
 ﻿using Business.Factories;
+using Business.Interfaces;
 using Business.Models;
 using Data.Repositories;
 
 namespace Business.Services;
 
-public class UserService(UserRepository userRepository)
+public class UserService(UserRepository userRepository) : IUserService
 {
     private readonly UserRepository _userRepository = userRepository;
 
@@ -20,21 +21,21 @@ public class UserService(UserRepository userRepository)
         return true;
     }
 
-  
+
     public async Task<IEnumerable<User?>> GetUsersAsync()
     {
         var userEntities = await _userRepository.GetAllAsync();
         return userEntities.Select(UserFactory.Create)!;
     }
 
-    
+
     public async Task<User?> GetUserByIdAsync(int id)
     {
         var userEntity = await _userRepository.GetAsync(u => u.Id == id);
         return UserFactory.Create(userEntity!);
     }
 
-    
+
     public async Task<bool> UpdateUserAsync(User user)
     {
         try
@@ -53,7 +54,7 @@ public class UserService(UserRepository userRepository)
         }
     }
 
-    
+
     public async Task<bool> DeleteUserAsync(int id)
     {
         try

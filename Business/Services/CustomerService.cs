@@ -1,17 +1,17 @@
 ﻿
 using Business.Factories;
+using Business.Interfaces;
 using Business.Models;
-using Data.Interfaces;
 using Data.Repositories;
 using System.Diagnostics;
 
 namespace Business.Services;
 
-public class CustomerService(CustomerRepository customerRepository)
+public class CustomerService(CustomerRepository customerRepository) : ICustomerService
 {
 
     private readonly CustomerRepository _customerRepository = customerRepository;
-     
+
 
     //Skapa en kund
 
@@ -27,7 +27,7 @@ public class CustomerService(CustomerRepository customerRepository)
         return true;
     }
 
-    //Hämta upp kund efter Kund 
+    //Hämta upp kund 
 
     public async Task<IEnumerable<Customer?>> GetCustomersAsync()
     {
@@ -42,7 +42,7 @@ public class CustomerService(CustomerRepository customerRepository)
         var customerEntity = await _customerRepository.GetAsync(x => x.Id == id);
         return CustomerFactory.Create(customerEntity!);
     }
-    //Hämta upp kund efter kunds namn
+    //Hämta upp efter kunds namn
     public async Task<Customer?> GetCustomerByCustomerNameAsync(string customerEmail)
     {
         var customerEntity = await _customerRepository.GetAsync(x => x.CustomerEmail == customerEmail);
@@ -60,7 +60,7 @@ public class CustomerService(CustomerRepository customerRepository)
             if (existingCustomer == null)
                 return false;
 
-            
+
             CustomerFactory.UpdateEntity(existingCustomer, customer);
 
             var result = await _customerRepository.UpdateAsync(x => x.Id == customer.Id, existingCustomer);
@@ -84,7 +84,7 @@ public class CustomerService(CustomerRepository customerRepository)
             if (customerEntity == null)
                 return false;
 
-            return await _customerRepository.DeleteAsync(x => x.Id == id); 
+            return await _customerRepository.DeleteAsync(x => x.Id == id);
         }
         catch (Exception ex)
         {

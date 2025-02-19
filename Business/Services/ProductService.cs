@@ -1,10 +1,11 @@
 ﻿using Business.Factories;
+using Business.Interfaces;
 using Business.Models;
 using Data.Repositories;
 
 namespace Business.Services;
 
-public class ProductService(ProductRepository productRepository)
+public class ProductService(ProductRepository productRepository) : IProductService
 {
     private readonly ProductRepository _productRepository = productRepository;
 

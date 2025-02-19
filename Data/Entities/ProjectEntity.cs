@@ -9,7 +9,8 @@ public class ProjectEntity
     public int Id { get; set; }
     public string ProjectName { get; set; } =null!;
     public string ProjectNumber { get; set; } = null!;
-    public string TotalPrice { get; set; } = null!;
+    public string? Description { get; set; }
+    public decimal TotalPrice { get; set; } = 0;
 
 
     [Column (TypeName ="date")]
