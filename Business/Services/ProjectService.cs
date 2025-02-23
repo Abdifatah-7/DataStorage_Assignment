@@ -3,24 +3,39 @@
 using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
-using Data.Repositories;
+using Data.Interfaces;
 
 
 
 
-public class ProjectService(ProjectRepository projectRepository) : IProjectService
+
+public class ProjectService(IProjectRepository projectRepository) : IProjectService
 {
-    private readonly ProjectRepository _projectRepository = projectRepository;
+    private readonly IProjectRepository _projectRepository = projectRepository;
 
     // Skapa ett nytt projekt
     public async Task<bool> CreateProjectAsync(ProjectRegistrationForm form)
     {
-        var projectEntity = ProjectFactory.Create(form);
-        if (projectEntity == null)
-            return false;
 
-        await _projectRepository.CreateAsync(projectEntity);
-        return true;
+        try
+        {
+            var existingProject = await _projectRepository.GetAsync(p => p.ProjectName == form.ProjectName);
+            if (existingProject != null)
+                return false;
+
+            var projectEntity = ProjectFactory.Create(form);
+            if (projectEntity == null)
+                return false;
+
+            var result = await _projectRepository.CreateAsync(projectEntity);
+            return result != null;
+        }
+        catch (Exception ex)
+        {
+            
+            Console.WriteLine($"Error creating project: {ex.Message}");
+            return false;
+        }
     }
 
     // Hämta alla projekt

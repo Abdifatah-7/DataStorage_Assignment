@@ -25,7 +25,17 @@ public abstract class BaseRepository<TEntity>(DataContext context) : IBaseReposi
         {
 
             await _db.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception saveEx)
+            {
+                Console.WriteLine($"Error saving changes: {saveEx.Message}");
+                Console.WriteLine($"Inner exception: {saveEx.InnerException?.Message}");
+                throw;
+            }
+
             return entity;
 
         }

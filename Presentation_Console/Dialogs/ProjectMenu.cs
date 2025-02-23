@@ -1,6 +1,7 @@
 ﻿
 using Business.Interfaces;
 using Business.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 namespace PresentationConsoleApp.Dialogs;
@@ -33,13 +34,16 @@ public class ProjectMenu(IProjectService projectService)
                     await ViewProjects();
                     break;
                 case "3":
-                    await UpdateProject();
+                    await ViewSpecificProject();
                     break;
                 case "4":
-                    await DeleteProject();
+                    await UpdateProject();
                     break;
                 case "5":
-                    return;
+                    await DeleteProject();
+                    break;
+                case "6":
+                    return ;
                 default:
                     Console.WriteLine("Invalid choice, try again.");
                     Console.ReadKey();
@@ -55,6 +59,9 @@ public class ProjectMenu(IProjectService projectService)
 
         Console.Write("Enter Project Name: ");
         var projectName = Console.ReadLine()?.Trim();
+
+        Console.Write("Enter Project Description: ");
+        var projectDescription = Console.ReadLine()?.Trim();
 
         Console.Write("Enter Total Price: ");
         if (!decimal.TryParse(Console.ReadLine(), out decimal totalPrice))
@@ -123,12 +130,13 @@ public class ProjectMenu(IProjectService projectService)
         {
             ProjectName = projectName,
             TotalPrice = totalPrice,
+            Description = projectDescription,
             StartDate = startDate,
             EndDate = endDate,
             CustomerId = customerId,
             ProductId = productId,
             UserId = userId,
-            StatusTypeId = statusTypeId
+            StatusId = statusTypeId
         };
 
         var result = await _projectService.CreateProjectAsync(registrationForm);
@@ -142,6 +150,8 @@ public class ProjectMenu(IProjectService projectService)
         Console.WriteLine("=== VIEW ALL PROJECTS ===");
 
         var projects = await _projectService.GetProjectsAsync();
+        Console.WriteLine($"Number of projects found: {projects?.Count() ?? 0}");
+
         if (!projects.Any())
         {
             Console.WriteLine("No projects found.");
@@ -150,9 +160,14 @@ public class ProjectMenu(IProjectService projectService)
         {
             foreach (var project in projects)
             {
-                // Förutsätter att Project-modellen har egenskaper: Id, ProjectName, ProjectNumber, TotalPrice, StartDate, EndDate
-                Console.WriteLine($"ID: {project.Id}, Name: {project.ProjectName}, Number: {project.ProjectNumber}, " +
-                                  $"Price: {project.TotalPrice:C}, Start: {project.StartDate:d}, End: {project.EndDate:d}");
+                Console.Write($"ID:{project!.Id} ");
+                Console.Write($"Name: {project.ProjectName} ");
+                Console.Write($"Prjoect Number: {project.ProjectNumber} ");
+                Console.Write($"Name: {project.ProjectName}");
+                Console.Write($"Price:{project.TotalPrice:C} ");
+                Console.Write($"Start date:{project!.StartDate :d} ");
+                Console.Write($"End Date:{project!.EndDate:d} ");
+                Console.Write($"Status:{project.StatusId} ");
             }
         }
         Console.ReadKey();
@@ -175,8 +190,14 @@ public class ProjectMenu(IProjectService projectService)
         if (project == null)
             Console.WriteLine("\nProject not found!");
         else
-            Console.WriteLine($"ID: {project.Id}, Name: {project.ProjectName}, Project Number: {project.ProjectNumber}, " +
-                              $"Price: {project.TotalPrice:Kr}, Start Date: {project.StartDate:d}, End Date: {project.EndDate:d}");
+        Console.Write($"ID:{project!.Id} ");
+        Console.Write($"Name: {project!.ProjectName} ");
+        Console.Write($"Prjoect Number: {project.ProjectNumber} ");
+        Console.Write($"Name: {project.ProjectName}");
+        Console.Write($"Price:{project.TotalPrice:C} ");
+        Console.Write($"Start date:{project.StartDate:d} ");
+        Console.Write($"End Date:{project.EndDate:d} ");
+        Console.Write($"Status:{project.StatusId} ");
         Console.ReadKey();
     }
 
@@ -226,7 +247,7 @@ public class ProjectMenu(IProjectService projectService)
             CustomerId = existingProject.CustomerId,
             ProductId = existingProject.ProductId,
             UserId = existingProject.UserId,
-            StatusTypeId = existingProject.StatusTypeId,
+            StatusId = existingProject.StatusId,
             ProjectNumber = existingProject.ProjectNumber  
         };
 

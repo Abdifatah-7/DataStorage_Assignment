@@ -6,53 +6,50 @@ namespace Business.Factories;
 
 public static class ProjectFactory
 {
-    public static ProjectEntity? Create(ProjectRegistrationForm form)
+    public static ProjectEntity? Create(ProjectRegistrationForm form) => form == null ? null : new()
     {
-        if (form == null) return null;
 
-        return new ProjectEntity
-        {
-            ProjectName = form.ProjectName,
-            ProjectNumber = ProjectNumberGenerator.GenerateProjectNumber(), 
-            TotalPrice = form.TotalPrice,
-            StartDate = form.StartDate,
-            EndDate = form.EndDate,
-            CustomerId = form.CustomerId,
-            ProductId = form.ProductId,
-            UserId = form.UserId,
-            StatusTypeId = form.StatusTypeId
-        };
-    }
+        ProjectName = form.ProjectName,
+        ProjectNumber = ProjectNumberGenerator.GenerateProjectNumber(),
+        Description = form.Description,
+        TotalPrice = form.TotalPrice,
+        StartDate = form.StartDate,
+        EndDate = form.EndDate,
+        CustomerId = form.CustomerId,
+        ProductId = form.ProductId,
+        UserId = form.UserId,
+        StatusId = form.StatusId
 
-    public static Project? Create(ProjectEntity entity)
+    };
+
+    public static Project? Create(ProjectEntity Entities) => Entities == null ? null : new()
     {
-        if (entity == null) return null;
 
-        return new Project
-        {
-            Id = entity.Id,
-            ProjectName = entity.ProjectName,
-            ProjectNumber = entity.ProjectNumber,
-            TotalPrice = entity.TotalPrice,
-            StartDate = entity.StartDate,
-            EndDate = entity.EndDate,
-            CustomerId = entity.CustomerId,
-            ProductId = entity.ProductId,
-            UserId = entity.UserId,
-            StatusTypeId = entity.StatusTypeId
-        };
-    }
+        Id = Entities.Id,
+        ProjectName = Entities.ProjectName,
+        ProjectNumber = Entities.ProjectNumber,
+        Description = Entities.Description,
+        TotalPrice = Entities.TotalPrice,
+        StartDate = Entities.StartDate,
+        EndDate = Entities.EndDate,
+        CustomerId = Entities.CustomerId,
+        ProductId = Entities.ProductId,
+        UserId = Entities.UserId,
+        StatusId = Entities.StatusId
+
+    };
 
     public static void UpdateEntity(ProjectEntity existingEntity, Project updatedProject)
     {
         existingEntity.ProjectName = updatedProject.ProjectName;
         existingEntity.TotalPrice = updatedProject.TotalPrice;
+        existingEntity.Description = updatedProject.Description;
         existingEntity.StartDate = updatedProject.StartDate;
         existingEntity.EndDate = updatedProject.EndDate;
         existingEntity.CustomerId = updatedProject.CustomerId;
         existingEntity.ProductId = updatedProject.ProductId;
         existingEntity.UserId = updatedProject.UserId;
-        existingEntity.StatusTypeId = updatedProject.StatusTypeId;
+        existingEntity.StatusId = updatedProject.StatusId;
     }
 
 }

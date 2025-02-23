@@ -81,6 +81,7 @@ public class CustomerMenu(ICustomerService customerService)
             Console.WriteLine("\n Customer was created succesfully");
         else
             Console.WriteLine("\n Customer was not created ");
+        Console.ReadKey();
     }
 
     public async Task ViewCustomers()
@@ -98,7 +99,11 @@ public class CustomerMenu(ICustomerService customerService)
         {
             foreach (var customer in customers)
             {
-                Console.WriteLine($"ID: {customer!.Id}, Name: {customer.CustomerName}, Email: {customer.CustomerEmail}");
+
+                Console.Write($"ID:{customer!.Id} ");
+                Console.Write($"Name: {customer.CustomerName} ");
+                Console.Write($"Email: {customer.CustomerEmail} ");
+
             }
         }
         Console.ReadKey();
@@ -124,7 +129,10 @@ public class CustomerMenu(ICustomerService customerService)
         if ( customer == null )
             Console.WriteLine("\n Customer not found!");
         else
-            Console.WriteLine($" ID: {customer!.Id}, Name: {customer.CustomerName},Email:  {customer.CustomerEmail}");
+
+        Console.Write($"ID:{customer!.Id} ");
+        Console.Write($"Name: {customer!.CustomerName} ");
+        Console.Write($"Email: {customer.CustomerEmail} ");
 
         Console.ReadKey();
     }
@@ -160,17 +168,16 @@ public class CustomerMenu(ICustomerService customerService)
         var customerEmail = Console.ReadLine()?.Trim();
         customerEmail = string.IsNullOrWhiteSpace(customerEmail) ? existingCustomer.CustomerEmail : customerEmail; //generas av Chat GTP
 
-
         //Användaren kan uppdatera endast ett fält och behålla det andra oförändrat.
-       // Om användaren lämnar fältet tomt, används det gamla värdet istället.
+        // Om användaren lämnar fältet tomt, används det gamla värdet istället.
 
-
-                var updatedCustomer = new Customer
+        var updatedCustomer = new Customer
         {
             Id = id,
             CustomerName = customerName,
             CustomerEmail = customerEmail
         };
+
 
         var success = await _customerService.UpdateCustomerAsync(updatedCustomer);
         Console.WriteLine(success ? "\n Customer updated successfully!" : "\n Failed to update customer.");

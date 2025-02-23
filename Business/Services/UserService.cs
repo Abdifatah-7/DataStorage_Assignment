@@ -1,13 +1,14 @@
 ﻿using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
-using Data.Repositories;
+using Data.Interfaces;
+
 
 namespace Business.Services;
 
-public class UserService(UserRepository userRepository) : IUserService
+public class UserService(IUserRepository userRepository) : IUserService
 {
-    private readonly UserRepository _userRepository = userRepository;
+    private readonly IUserRepository _userRepository = userRepository;
 
 
     public async Task<bool> CreateUserAsync(UserRegistrationForm form)

@@ -1,13 +1,14 @@
 ﻿using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
-using Data.Repositories;
+using Data.Interfaces;
+
 
 namespace Business.Services;
 
-public class ProductService(ProductRepository productRepository) : IProductService
+public class ProductService(IProductRepository productRepository) : IProductService
 {
-    private readonly ProductRepository _productRepository = productRepository;
+    private readonly IProductRepository _productRepository = productRepository;
 
     // Skapa en produkt
     public async Task<bool> CreateProductAsync(ProductRegistrationForm form)

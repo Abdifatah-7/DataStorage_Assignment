@@ -10,6 +10,8 @@ public class ProjectRegistrationForm
     [Required]
     public decimal TotalPrice { get; set; }
 
+    public string? Description { get; set; }
+
     [Required]
     public DateTime StartDate { get; set; }
 
@@ -26,5 +28,5 @@ public class ProjectRegistrationForm
     public int UserId { get; set; }
 
     [Required]
-    public int StatusTypeId { get; set; }
+    public int StatusId { get; set; }
 }

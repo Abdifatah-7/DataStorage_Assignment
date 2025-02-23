@@ -1,13 +1,14 @@
 ﻿using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
-using Data.Repositories;
+using Data.Interfaces;
+
 
 namespace Business.Services;
 
-public class StatusTypeService(StatusTypeRepository statusTypeRepository) : IStatusTypeService
+public class StatusTypeService(IStatusTypeRepository statusTypeRepository) : IStatusTypeService
 {
-    private readonly StatusTypeRepository _statusTypeRepository = statusTypeRepository;
+    private readonly IStatusTypeRepository _statusTypeRepository = statusTypeRepository;
 
 
     public async Task<bool> CreateStatusTypeAsync(StatusTypeRegistration form)

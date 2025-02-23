@@ -100,7 +100,7 @@ public class ProductMenu(IProductService productService)
         {
             foreach (var product in products)
             {
-                Console.WriteLine($"ID: {product!.Id}, Name: {product.ProductName}, Price: {product.ProductPrice:Kr}");
+                Console.WriteLine($"ID: {product!.Id}, Name: {product.ProductName}, Price: {product.ProductPrice:C}");
             }
         }
         Console.ReadKey();

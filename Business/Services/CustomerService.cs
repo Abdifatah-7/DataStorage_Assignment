@@ -2,15 +2,15 @@
 using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
-using Data.Repositories;
+using Data.Interfaces;
 using System.Diagnostics;
 
 namespace Business.Services;
 
-public class CustomerService(CustomerRepository customerRepository) : ICustomerService
+public class CustomerService(ICustomerRepository customerRepository) : ICustomerService
 {
 
-    private readonly CustomerRepository _customerRepository = customerRepository;
+    private readonly ICustomerRepository _customerRepository = customerRepository;
 
 
     //Skapa en kund
